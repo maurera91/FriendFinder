@@ -1,4 +1,4 @@
 let friends = {
     
 }
-module.exports = tableArray;
+module.exports = friends;

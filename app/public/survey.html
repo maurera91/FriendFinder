@@ -21,7 +21,12 @@
       <h1 class="text-center">Fill Out Our Quiz!</h1>
       <hr>
       <h2 class="text-center">Please Fill out your preferences from 1 (least) to 5 (most)</h2>
+      
       <br>
+      <div class="text-center">
+            <a href="*"><button class="btn btn-lg btn-primary">Go Home</button></a>
+            
+          </div>
     </div>
 
 
@@ -246,7 +251,7 @@
         </div>
     </div>
 
-    <button type = "button" class = "btn btn-primary" id = "submit" data-toggle = "modal" data-target = "resultModal" >Submit Survey!</button>
+    <button type = "button" class = "btn btn-primary" id = "submit">Submit Survey!</button>
 
     <div class = "modal-fade" id = "resultModal" aria-hidden="true" tabindex="-1">
         <div class = "modal-dialog" role = "document">
@@ -265,13 +270,7 @@
                 </div>
             </div>
         </div>
-
     </div>
-
-    
-    
-
-
     <footer class="footer mt-4">
       <div class="container">
         <p>Control Panel</p>
@@ -279,9 +278,7 @@
             Wait List</a>
       </div>
     </footer>
-
   </div>
-
 </body>
 
 <style>
@@ -292,6 +289,7 @@
 
 <!-- BELOW CODE IS CRITICAL. IT HANDLES HOW FORM DATA IS LOADED FROM OUR SERVER -->
 <script type="text/javascript">
+    let friendsArray = require(friends.js);
 
     $("#submit").on("click", (event) =>{
         event.preventDefault();
@@ -310,13 +308,46 @@
             $("#q9").val(),
             $("q10").val()
             ]
-        }
-        $.post("/api/friends", newFriend, (data) => {
+        };
 
-        })
+        //compare newFriends score to scores in friends.js
+        let bestFriend = findBestFriend(newFriend, friendsArray);
+
         
+
+        
+
+        $.post("/api/friends", newFriend, (data) => {
+            
+
+        });
+
+        
+
         
     });
+    
+    function findBestFriend(newFriend, friendsArray){
+        let bestFriend = [friendsArray[0]];
+        
+        for (let friend in friendArray){
+            if (findDifference(newFriend, friend) < findDifference(newFriend,bestFriend[0])){
+                let bestFriend = [friend];
+            }
+            else if (findDifference(newFriend, friend) = findDifference(newFriend,bestFriend[0])){
+                bestFriend.push(friend);
+            }  
+        }
+        return bestFriend;
+    }
+
+    function findDifference(friend1, friend2){
+        let difference = 0;
+        for(let i = 0; i<10; i++){
+                difference += Math.abs(friend1.score[i]-friend2.score[i]);
+            }
+        return difference;
+    }
     
 
 </script>

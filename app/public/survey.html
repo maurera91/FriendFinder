@@ -265,19 +265,13 @@
                 <div>
                     <div class = "modal-body">
                         <h6 id = "resultName"></h6>
-                        <img id = profilePic/>
+                        <img id = "resultProfilePic"/>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <footer class="footer mt-4">
-      <div class="container">
-        <p>Control Panel</p>
-        <p><a href="#" id="clear">Clear Table</a> | <a href="/api/tables">API Table Link</a> | <a href="/api/waitlist">API
-            Wait List</a>
-      </div>
-    </footer>
+   
   </div>
 </body>
 
@@ -289,7 +283,6 @@
 
 <!-- BELOW CODE IS CRITICAL. IT HANDLES HOW FORM DATA IS LOADED FROM OUR SERVER -->
 <script type="text/javascript">
-    let friendsArray = require(friends.js);
 
     $("#submit").on("click", (event) =>{
         event.preventDefault();
@@ -310,16 +303,20 @@
             ]
         };
 
+        let bestFriend;
+
         //compare newFriends score to scores in friends.js
-        let bestFriend = findBestFriend(newFriend, friendsArray);
-
-        
-
-        
+        $.ajax({ url: "/api/friends", method: "GET"})
+            .then(function(friendData){
+                let bestFriend = findBestFriend(newFriend, friendData);
+                $("#resultName").text(bestFriend.name);
+                $("#resultProfilePic").attr("src",bestFriend.photo);
+            })
 
         $.post("/api/friends", newFriend, (data) => {
-            
-
+            if (data){
+                console.log("New Friend added to friends.js")
+            }
         });
 
         

@@ -311,6 +311,7 @@
                 let bestFriend = findBestFriend(newFriend, friendData);
                 $("#resultName").text(bestFriend.name);
                 $("#resultProfilePic").attr("src",bestFriend.photo);
+                $("resultModal").modal("show");
             })
 
         $.post("/api/friends", newFriend, (data) => {
